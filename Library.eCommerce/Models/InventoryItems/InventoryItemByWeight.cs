@@ -3,19 +3,18 @@ namespace Library.eCommerce.Models
 {
 	public class InventoryItemByWeight : InventoryItem
 	{
-		
+		public decimal Weight { get; set; }
 		public InventoryItemByWeight()
 		{
 			Weight = 0;
 		}
 
-		public InventoryItemByWeight(string name, string description, decimal price, decimal weight, int iD)
+		public InventoryItemByWeight(string name, string description, decimal price, decimal weight)
 		{
 			Name = name;
 			Description = description;
 			Price = price;
 			Weight = weight;
-			Id = iD;
 		}
 
 		public InventoryItemByWeight(InventoryItem invItem, decimal weight)
@@ -29,7 +28,7 @@ namespace Library.eCommerce.Models
 
 		public override string ToString()
 		{
-			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Weight: {Weight}";
+			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Weight: {Weight} lbs";
 		}
 	}
 }

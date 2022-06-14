@@ -3,19 +3,18 @@ namespace Library.eCommerce.Models
 {
 	public class InventoryItemByQuantity : InventoryItem
 	{
-		
+		public int Quantity { get; set; }
 		public InventoryItemByQuantity()
 		{
 			Quantity = 0;
 		}
 
-		public InventoryItemByQuantity(string name, string description, decimal price, int quantity, int iD)
+		public InventoryItemByQuantity(string name, string description, decimal price, int quantity)
 		{
 			Name = name;
 			Description = description;
 			Price = price;
 			Quantity = quantity;
-			Id = iD;
 		}
 
 		public InventoryItemByQuantity(InventoryItem invItem, int quantity)

@@ -3,8 +3,8 @@ namespace Library.eCommerce.Models
 {
 	public class CartItemByQuantity : CartItem
 	{
-		
-		public new decimal TotalPrice
+		public int Quantity { get; set; }
+		public override decimal TotalPrice
 		{
 			get
 			{

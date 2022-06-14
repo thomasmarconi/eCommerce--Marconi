@@ -59,6 +59,18 @@ namespace Library.ECommerce.Services
 					|| (i?.Description?.ToUpper()?.Contains(query.ToUpper()) ?? false));
 		}
 
+		public dynamic GetInventoryItemByID(int iD)
+        {
+			return Inventory.FirstOrDefault(i =>
+					(i?.Id.Equals(iD) ?? false)) ?? new InventoryItem();
+		}
+
+		public dynamic GetCartItemByID(int iD)
+		{
+			return Cart.FirstOrDefault(i =>
+					(i?.Id.Equals(iD) ?? false)) ?? new CartItem();
+		}
+
 		public void AddOrUpdate(InventoryItem item)
 		{
 			//Id management for adding a new record.
@@ -98,96 +110,93 @@ namespace Library.ECommerce.Services
 			}
 		}
 
-		public bool AddToCart(int productId)
+		public bool AddToCart(int productId, decimal amount)
 		{
-
-
-
-			bool inInventory = false;
-			var remFromInv = new InventoryItemByQuantity();
-			for (int i = 0; i < Inventory.Count; i++)
+			var itemToAdd = GetInventoryItemByID(productId);
+			if (itemToAdd != null)
 			{
-				if (Inventory[i].Id == productId)
+				if (itemToAdd is InventoryItemByQuantity)
 				{
-					if (quantity > Inventory[i].Quantity)
+					if (amount > (itemToAdd?.Quantity ?? 0))
 					{
-						quantity = Inventory[i].Quantity;
-						Console.WriteLine($"Error: Not enough {Inventory[i].Name}s in inventory. Adding maximum({quantity}) {Inventory[i].Name}s to cart instead.");
+						amount = itemToAdd?.Quantity ?? 0;
+						Console.WriteLine($"Error: Not enough {itemToAdd.Name ?? string.Empty}s in inventory. Adding maximum({amount}) {itemToAdd.Name}s to cart instead.");
+						if (itemToAdd != null)
+						{
+							//set inventory item's quantity = 0
+							(Inventory.FirstOrDefault(i => (i?.Id.Equals(itemToAdd.Id) ?? false)) as InventoryItemByQuantity).Quantity = 0;
+						}
 					}
-					Inventory[i].Quantity--;
-					remFromInv = (InventoryItemByQuantity)Inventory[i];
-					inInventory = true;
-				}
-			}
-			//make the product to add for later just in case
-			var addToCart = new CartItemByQuantity(remFromInv.Name ?? String.Empty, remFromInv.Description ?? String.Empty, remFromInv.Price, quantity, remFromInv.Id);
-			if (inInventory == false)
-				return false;
-			else if (Cart.Count == 0) //if cart is empty just add
-			{
-				Cart.Add(addToCart);
-				return true;
-			}
-			else //see if cart already has the product in it
-			{
-				for (int i = 0; i < Cart.Count; i++)
-				{
-					if (Cart[i].Name == remFromInv.Name)
+					
+
+					//make the product to add for later just in case
+					var addToCart = new CartItemByQuantity(itemToAdd?.Name ?? String.Empty, itemToAdd?.Description ?? String.Empty, itemToAdd?.Price ?? 0, (int)amount, itemToAdd?.Id ?? 0);
+					if (Cart.Count == 0) //if cart is empty just add
 					{
-						Cart[i].Quantity++;
+						Cart.Add(addToCart);
 						return true;
 					}
-				}
-			}
-			//cart doesnt contain product already, add it to cart
-			Cart.Add(addToCart);
-			return true;
-		}
-
-		public bool AddToCart(int productId, decimal weight)
-		{
-			bool inInventory = false;
-			var remFromInv = new InventoryItemByWeight();
-			for (int i = 0; i < Inventory.Count; i++)
-			{
-				if (Inventory[i].Id == productId)
-				{
-					if (weight > Inventory[i].Weight)
+					else //see if cart already has the product in it
 					{
-						weight = Inventory[i].Weight;
-						Console.WriteLine($"Error: Not enough {Inventory[i].Name}s in inventory. Adding maximum({weight}) {Inventory[i].Name}s to cart instead.");
+						for (int i = 0; i < Cart.Count; i++)
+						{
+							if (Cart[i].Name == itemToAdd?.Name ?? string.Empty)
+							{
+								var cartItem = (Cart[i] as CartItemByQuantity);
+								if (cartItem != null)
+									cartItem.Quantity += (int)amount;
+								return true;
+							}
+						}
 					}
-					Inventory[i].Weight--;
-					remFromInv = (InventoryItemByWeight)Inventory[i];
-					inInventory = true;
+					//cart doesnt contain product already, add it to cart
+					Cart.Add(addToCart);
+					return true;
 				}
-			}
-			//make the product to add for later just in case
-			var addToCart = new CartItemByWeight(remFromInv.Name ?? String.Empty, remFromInv.Description ?? String.Empty, remFromInv.Price, weight, remFromInv.Id);
-			if (inInventory == false)
-				return false;
-			else if (Cart.Count == 0) //if cart is empty just add
-			{
-				Cart.Add(addToCart);
-				return true;
-			}
-			else //see if cart already has the product in it
-			{
-				for (int i = 0; i < Cart.Count; i++)
+				else if (itemToAdd is InventoryItemByWeight)
 				{
-					if (Cart[i].Name == remFromInv.Name)
+					if (amount > (itemToAdd?.Weight ?? 0))
 					{
-						Cart[i].Quantity++;
+						amount = itemToAdd?.Weight ?? 0;
+						Console.WriteLine($"Error: Not enough {itemToAdd.Name ?? string.Empty}s in inventory. Adding maximum({amount}) {itemToAdd.Name}s to cart instead.");
+						if (itemToAdd != null)
+						{
+							//set inventory item's quantity = 0
+							(Inventory.FirstOrDefault(i => (i?.Id.Equals(itemToAdd.Id) ?? false)) as InventoryItemByQuantity).Quantity = 0;
+						}
+					}
+
+					//make the product to add for later just in case
+					var addToCart = new CartItemByWeight(itemToAdd?.Name ?? String.Empty, itemToAdd?.Description ?? String.Empty, itemToAdd?.Price ?? 0, amount, itemToAdd?.Id ?? 0);
+					if (Cart.Count == 0) //if cart is empty just add
+					{
+						Cart.Add(addToCart);
 						return true;
 					}
+					else //see if cart already has the product in it
+					{
+						for (int i = 0; i < Cart.Count; i++)
+						{
+							if (Cart[i].Name == itemToAdd.Name)
+							{
+								var cartItem = (Cart[i] as CartItemByWeight);
+								if (cartItem != null)
+									cartItem.Weight+= amount;
+								return true;
+							}
+						}
+					}
+					//cart doesnt contain product already, add it to cart
+					Cart.Add(addToCart);
+					return true;
 				}
+				else return false;
+
 			}
-			//cart doesnt contain product already, add it to cart
-			Cart.Add(addToCart);
-			return true;
+			else return false; 
 		}
 
-		public bool DeleteFromCart(string product, int quantity)
+		public bool DeleteFromCart(string product, decimal quantity)
 		{
 			if (Cart.Count == 0)
 				return false;
@@ -197,14 +206,34 @@ namespace Library.ECommerce.Services
 				{
 					if (Cart[i].Name == product)
 					{
-						Cart[i].Quantity -= quantity;
-						if (Cart[i].Quantity < 1)
-							Cart.RemoveAt(i);
-						return true;
+						if(Cart[i] is CartItemByQuantity)
+                        {
+							var cartItem = Cart[i] as CartItemByQuantity;
+							if (cartItem != null)
+							{
+								cartItem.Quantity -= (int)quantity;
+								if (cartItem.Quantity < 1)
+									Cart.RemoveAt(i);
+								return true;
+							}
+						}
+						else if (Cart[i] is CartItemByWeight)
+                        {
+							var cartItem = Cart[i] as CartItemByWeight;
+							if (cartItem != null)
+							{
+								cartItem.Weight -= quantity;
+								if (cartItem.Weight < 1)
+									Cart.RemoveAt(i);
+								return true;
+							}
+						}
 					}
+						
 				}
 				return false;
 			}
+				
 		}
 
 		public void Checkout()
@@ -220,54 +249,57 @@ namespace Library.ECommerce.Services
 			Console.WriteLine($"Subtotal is: {subtotal}");
 			Console.WriteLine($"Tax is: {taxAmount}");
 			Console.WriteLine($"Total is: {subtotal + taxAmount}\n");
+			PaymentMethod();
 		}
 
-		public void SearchByName(string InvOrCart, string query)
+		private void PaymentMethod()
 		{
-			if (InvOrCart == "Inv")
+			Console.WriteLine("Choose Payment Method:");
+			Console.WriteLine("1. Credit Card");
+			Console.WriteLine("2. Subway Gift Card");
+			Console.WriteLine("3. TJMaxx Gift Card");
+			Console.WriteLine("4. Cash");
+			var choice = Console.ReadLine() ?? string.Empty;
+			switch ((choice))
 			{
-				for (int i = 0; i < Inventory.Count; i++)
-				{
-					if (Inventory[i].Name == query)
+				case "1":
 					{
-						Console.WriteLine(Inventory[i]);
+						Console.WriteLine("Enter Credit Cart Number: ");
+						var creditCardNumber = Console.ReadLine() ?? string.Empty;
+						Console.WriteLine("PIN: ");
+						var securityCode = Console.ReadLine() ?? string.Empty;
+						Console.WriteLine("Enter Expiration (MM/YYYY): ");
+						var expiration = Console.ReadLine() ?? string.Empty;
+						break;
 					}
-				}
-			}
-			else //searching the cart
-			{
-				for (int i = 0; i < Cart.Count; i++)
-				{
-					if (Cart[i].Name == query)
-					{
-						Console.WriteLine(Cart[i]);
-					}
-				}
-			}
-		}
 
-		public void SearchByDesc(string InvOrCart, string query)
-		{
-			if (InvOrCart == "Inv")
-			{
-				for (int i = 0; i < Inventory.Count; i++)
-				{
-					if (Inventory[i].Description == query)
+				case "2":
 					{
-						Console.WriteLine(Inventory[i]);
+						Console.WriteLine("Enter Gift Card Number: ");
+						var creditCardNumber = Console.ReadLine() ?? string.Empty;
+						Console.WriteLine("Enter PIN: ");
+						var PIN = Console.ReadLine() ?? string.Empty;
+						break;
 					}
-				}
-			}
-			else //searching the cart
-			{
-				for (int i = 0; i < Cart.Count; i++)
-				{
-					if (Cart[i].Description == query)
+
+				case "3":
 					{
-						Console.WriteLine(Cart[i]);
+						Console.WriteLine("Enter Gift Card Number: ");
+						var creditCardNumber = Console.ReadLine() ?? string.Empty;
+						Console.WriteLine("Enter PIN: ");
+						var PIN = Console.ReadLine() ?? string.Empty;
+						break;
 					}
-				}
+
+				case "4":
+					{
+						Console.WriteLine("Enter Cash Amount: ");
+						var creditCardNumber = Console.ReadLine() ?? string.Empty;
+						Console.WriteLine("Open Disc Drive and Jam Money Inside...it should be fineeeee");
+						break;
+					}
 			}
+
 
 		}
 

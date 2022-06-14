@@ -46,9 +46,8 @@ namespace MyApp
                 }
                 else if (action == ActionType.Update)
                 {
-                    var itemToUpdate = productService
-                            .Inventory
-                            .FirstOrDefault(i => i.Id == SelectInventoryItem("update"));
+                    var itemId = SelectInventoryItem("update");
+                    var itemToUpdate = productService.Inventory.FirstOrDefault(i => i.Id == itemId);
                     if (itemToUpdate != null)
                     {
                         productService.AddOrUpdate(Helpers.FillInventoryItem(itemToUpdate));
@@ -73,19 +72,23 @@ namespace MyApp
                     cont = false;
                 }
                 else if (action == ActionType.AddToCart)
-                { 
+                {
                     //need to determine whether the item that is wanting to be added is a byWeight or byQuantity
+                    Console.WriteLine("Current Inventory");
+                    Helpers.ListItems(productService.Inventory);
                     Console.WriteLine("You have chosen to add a product to the cart.");
                     Console.WriteLine("What product would you like to add to cart?");
-                    var productId = int.Parse(Console.ReadLine() ?? "")
-                    if (productService.AddToCart(productId))
+                    var productId = int.Parse(Console.ReadLine() ?? string.Empty);
+                    Console.WriteLine("Enter amount of item to be added to cart.");
+                    var amount = decimal.Parse(Console.ReadLine() ?? string.Empty);
+                    if (productService.AddToCart(productId, amount))
                         Console.WriteLine("Product added to cart successfully!");
                     else
                         Console.WriteLine("Product failed to add to cart.");
                 }
                 else if (action == ActionType.DeleteFromCart)
                 {
-                    var indexToDelete = SelectInventoryItem("delete");
+                    var indexToDelete = SelectCartItem("delete");
                     productService.DeleteFromCart(indexToDelete);
                     /*string product;
                     int quantity;
@@ -216,6 +219,20 @@ namespace MyApp
         private static int SelectInventoryItem(string action)
         {
             Helpers.ListItems(ProductService.Current.Inventory);
+            while (true)
+            {
+                Console.WriteLine($"Which inventory item would you like to {action}?");
+                if (int.TryParse(Console.ReadLine(), out var id))
+                {
+                    return id;
+                }
+            }
+
+        }
+
+        private static int SelectCartItem(string action)
+        {
+            Helpers.ListItems(ProductService.Current.Cart);
             while (true)
             {
                 Console.WriteLine($"Which inventory item would you like to {action}?");

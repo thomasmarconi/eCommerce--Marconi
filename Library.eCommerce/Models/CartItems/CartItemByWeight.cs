@@ -3,8 +3,8 @@ namespace Library.eCommerce.Models
 {
 	public class CartItemByWeight : CartItem
 	{
-		
-		public new decimal TotalPrice
+		public decimal Weight { get; set; }
+		public override decimal TotalPrice
 		{
 			get
 			{
@@ -26,7 +26,7 @@ namespace Library.eCommerce.Models
 
 		public override string ToString()
 		{
-			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Weight: {Weight}, Total Price: {TotalPrice}";
+			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Weight: {Weight}, Total Price: {TotalPrice} lbs";
 		}
 	}
 }
