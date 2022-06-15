@@ -6,6 +6,7 @@ namespace Library.eCommerce.Models
         public string? Name { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }
+        public bool isBoGo { get; set; }
         
         
 
@@ -16,6 +17,7 @@ namespace Library.eCommerce.Models
             Name = String.Empty;
             Description = String.Empty;
             Price = 0;
+            isBoGo = false;
         }
     }
 }

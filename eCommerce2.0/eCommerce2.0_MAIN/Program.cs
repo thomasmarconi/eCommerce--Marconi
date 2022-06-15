@@ -53,6 +53,15 @@ namespace MyApp
                         productService.AddOrUpdate(Helpers.FillInventoryItem(itemToUpdate));
                     }
                 }
+                else if (action == ActionType.SetBogo )
+                {
+                    var itemId = SelectInventoryItem("set BoGo status");
+                    var itemToUpdate = productService.Inventory.FirstOrDefault(i => i.Id == itemId);
+                    if (itemToUpdate != null)
+                    {
+                        productService.SetBoGoStatus(itemToUpdate);
+                    }
+                }
                 else if (action == ActionType.Delete)
                 {
                     var indexToDelete = SelectInventoryItem("delete");
@@ -137,10 +146,11 @@ namespace MyApp
             Console.WriteLine("1. List Inventory");
             Console.WriteLine("2. Add New Product to Inventory");
             Console.WriteLine("3. Update a Product");
-            Console.WriteLine("4. Delete a Product");
-            Console.WriteLine("5. Save Inventory");
-            Console.WriteLine("6. Load Inventory");
-            Console.WriteLine("7. Exit");
+            Console.WriteLine("4. Set a Product's BoGo status");
+            Console.WriteLine("5. Delete a Product");
+            Console.WriteLine("6. Save Inventory");
+            Console.WriteLine("7. Load Inventory");
+            Console.WriteLine("8. Exit");
 
             string input = Console.ReadLine() ?? "0";
 
@@ -155,12 +165,14 @@ namespace MyApp
                     case "3":
                         return ActionType.Update;
                     case "4":
-                        return ActionType.Delete;
+                        return ActionType.SetBogo;
                     case "5":
-                        return ActionType.Save;
+                        return ActionType.Delete;
                     case "6":
-                        return ActionType.Load;
+                        return ActionType.Save;
                     case "7":
+                        return ActionType.Load;
+                    case "8":
                         return ActionType.Exit;
                     default:
                         return ActionType.InvalidChoice;
@@ -249,7 +261,7 @@ namespace MyApp
     {
         PrintInv, PrintCart, Create, Update,
         Delete, Save, Load, Exit, AddToCart, DeleteFromCart,
-        Checkout, SearchInv, SearchCart, InvalidChoice, Dummy
+        Checkout, SearchInv, SearchCart, InvalidChoice, Dummy, SetBogo
     }
 
     

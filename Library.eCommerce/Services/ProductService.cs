@@ -130,7 +130,7 @@ namespace Library.ECommerce.Services
 					
 
 					//make the product to add for later just in case
-					var addToCart = new CartItemByQuantity(itemToAdd?.Name ?? String.Empty, itemToAdd?.Description ?? String.Empty, itemToAdd?.Price ?? 0, (int)amount, itemToAdd?.Id ?? 0);
+					var addToCart = new CartItemByQuantity(itemToAdd?.Name ?? String.Empty, itemToAdd?.Description ?? String.Empty, itemToAdd?.Price ?? 0, (int)amount, itemToAdd?.Id ?? 0, itemToAdd?.isBoGo ?? false);
 					if (Cart.Count == 0) //if cart is empty just add
 					{
 						Cart.Add(addToCart);
@@ -167,7 +167,7 @@ namespace Library.ECommerce.Services
 					}
 
 					//make the product to add for later just in case
-					var addToCart = new CartItemByWeight(itemToAdd?.Name ?? String.Empty, itemToAdd?.Description ?? String.Empty, itemToAdd?.Price ?? 0, amount, itemToAdd?.Id ?? 0);
+					var addToCart = new CartItemByWeight(itemToAdd?.Name ?? String.Empty, itemToAdd?.Description ?? String.Empty, itemToAdd?.Price ?? 0, amount, itemToAdd?.Id ?? 0, itemToAdd?.isBoGo ?? false );
 					if (Cart.Count == 0) //if cart is empty just add
 					{
 						Cart.Add(addToCart);
@@ -318,5 +318,12 @@ namespace Library.ECommerce.Services
 			File.WriteAllText("SaveDataInv.json", productInvJson);
 			File.WriteAllText("SaveDataCart.json", productCartJson);
 		}
+
+		public void SetBoGoStatus(InventoryItem item)
+        {
+			Console.WriteLine("Enter BoGo status: (yes or no)");
+			var BoGo = Console.ReadLine() ?? String.Empty;
+			item.isBoGo = BoGo == "yes";
+        }
 	}
 }

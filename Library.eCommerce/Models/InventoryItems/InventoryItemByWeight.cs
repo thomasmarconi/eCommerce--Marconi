@@ -9,12 +9,13 @@ namespace Library.eCommerce.Models
 			Weight = 0;
 		}
 
-		public InventoryItemByWeight(string name, string description, decimal price, decimal weight)
+		public InventoryItemByWeight(string name, string description, decimal price, decimal weight, bool BoGo)
 		{
 			Name = name;
 			Description = description;
 			Price = price;
 			Weight = weight;
+			isBoGo = BoGo;
 		}
 
 		public InventoryItemByWeight(InventoryItem invItem, decimal weight)
@@ -24,11 +25,15 @@ namespace Library.eCommerce.Models
 			this.Price = invItem.Price;
 			this.Weight = weight;
 			this.Id = invItem.Id;
+			this.isBoGo = invItem.isBoGo;
 		}
 
 		public override string ToString()
 		{
-			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Weight: {Weight} lbs";
+			var BoGo = "no";
+			if (isBoGo)
+				BoGo = "yes";
+			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Weight: {Weight} lbs, BoGo: {BoGo}";
 		}
 	}
 }

@@ -8,7 +8,10 @@ namespace Library.eCommerce.Models
 		{
 			get
 			{
-				return (Quantity * Price);
+				if (isBoGo)
+					return ((Quantity / 2) * Price);
+				else
+					return (Quantity * Price);
 			}
 		}
 
@@ -16,18 +19,22 @@ namespace Library.eCommerce.Models
 		{
 		}
 
-		public CartItemByQuantity(string name, string description, decimal price, int quantity, int iD)
+		public CartItemByQuantity(string name, string description, decimal price, int quantity, int iD, bool BoGo)
 		{
 			Name = name;
 			Description = description;
 			Price = price;
 			Quantity = quantity;
 			Id = iD;
+			isBoGo = BoGo;
 		}
 
 		public override string ToString()
 		{
-			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Quantity: {Quantity}, Total Price: {TotalPrice}";
+			var BoGo = "no";
+			if (isBoGo)
+				BoGo = "yes";
+			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Quantity: {Quantity}, BoGo: {BoGo} Total Price: {TotalPrice}";
 		}
 	}
 }

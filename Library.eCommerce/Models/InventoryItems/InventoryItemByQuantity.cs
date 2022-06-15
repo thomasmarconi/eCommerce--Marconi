@@ -9,12 +9,13 @@ namespace Library.eCommerce.Models
 			Quantity = 0;
 		}
 
-		public InventoryItemByQuantity(string name, string description, decimal price, int quantity)
+		public InventoryItemByQuantity(string name, string description, decimal price, int quantity, bool BoGo)
 		{
 			Name = name;
 			Description = description;
 			Price = price;
 			Quantity = quantity;
+			isBoGo = BoGo;
 		}
 
 		public InventoryItemByQuantity(InventoryItem invItem, int quantity)
@@ -24,11 +25,15 @@ namespace Library.eCommerce.Models
 			this.Price = invItem.Price;
 			this.Quantity = quantity;
 			this.Id = invItem.Id;
+			this.isBoGo = invItem.isBoGo;
         }
 
 		public override string ToString()
 		{
-			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Quantity: {Quantity}";
+			var BoGo = "no";
+			if (isBoGo)
+				BoGo = "yes";
+			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Quantity: {Quantity}, BoGo: {BoGo}";
 		}
 
 	}

@@ -14,8 +14,6 @@ namespace eCommerce.Helpers
 
         internal static InventoryItem FillInventoryItem(InventoryItem? invItem)
         {
-            Console.WriteLine($"invItem's ID is {invItem.Id}");
-
             Console.WriteLine("What is the name of the product?");
             var name = Console.ReadLine();
 
@@ -24,6 +22,14 @@ namespace eCommerce.Helpers
 
             Console.WriteLine("Enter product type: \"weight\" or \"quantity\"");
             var weightOrQuan = Console.ReadLine();
+
+            Console.WriteLine("Is product BoGo? (yes or no)");
+            var BoGo = Console.ReadLine() ?? String.Empty;
+            if (BoGo != "yes" && BoGo != "no")
+            {
+                Console.WriteLine("Does not compute -- defaulting BoGo to no");
+                BoGo = "no";
+            }
 
             if (weightOrQuan == "quantity")
             {
@@ -38,24 +44,18 @@ namespace eCommerce.Helpers
                         {
                             Console.WriteLine("Does not compute -- defaulting quantity to 1");
                         }
+                        
+                            
                         if (invItem == null)
                         {
-                            return new InventoryItemByQuantity(name ?? string.Empty, desc ?? string.Empty, price, quant);
-                            /*{
-                                Name = name ?? string.Empty
-                                ,
-                                Description = desc ?? string.Empty
-                                ,
-                                Price = price
-                                ,
-                                Quantity = quant
-                            };*/
+                            return new InventoryItemByQuantity(name ?? string.Empty, desc ?? string.Empty, price, quant, (BoGo == "yes"));
                         }
                         var newInvItem = invItem as InventoryItemByQuantity ?? new InventoryItemByQuantity();
                         newInvItem.Name = name ?? string.Empty;
                         newInvItem.Description = desc ?? string.Empty;
                         newInvItem.Price = price;
                         newInvItem.Quantity = quant;
+                        newInvItem.isBoGo = (BoGo == "yes");
                         return newInvItem;
                     }
                 }
@@ -75,22 +75,14 @@ namespace eCommerce.Helpers
                         }
                         if (invItem == null)
                         {
-                            return new InventoryItemByWeight(name ?? string.Empty, desc ?? string.Empty, price, weight);
-                            /*{
-                                Name = name ?? string.Empty
-                                ,
-                                Description = desc ?? string.Empty
-                                ,
-                                Price = price
-                                ,
-                                Weight = weight
-                            }*/;
+                            return new InventoryItemByWeight(name ?? string.Empty, desc ?? string.Empty, price, weight, (BoGo == "yes"));
                         }
                         var newInvItem = invItem as InventoryItemByWeight ?? new InventoryItemByWeight();
                         newInvItem.Name = name ?? string.Empty;
                         newInvItem.Description = desc ?? string.Empty;
                         newInvItem.Price = price;
                         newInvItem.Weight = weight;
+                        newInvItem.isBoGo = (BoGo == "yes");
                         return newInvItem;
                     }
                 }
