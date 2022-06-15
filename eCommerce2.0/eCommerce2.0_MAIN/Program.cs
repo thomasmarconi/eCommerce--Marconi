@@ -1,4 +1,4 @@
-﻿using Library.ECommerce.Services;
+﻿using Library.eCommerce.Services;
 using eCommerce.Helpers;
 
 namespace MyApp
@@ -7,13 +7,15 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            var productService = ProductService.Current;
+            var inventoryService = InventoryService.Current;
+            var cartService = CartService.Current;
             Console.WriteLine("Welcome to the Marconi's Magical Wares!");
             Console.WriteLine("Would you like to load saved cart/invetory data? (yes or no)");
             var willLoad = Console.ReadLine() ?? String.Empty;
             if(willLoad == "yes")
             {
-                productService.Load();
+                inventoryService.Load();
+                cartService.Load();
             }
             Console.WriteLine("User Verification: Enter 1 for customer, 2 for employee!");
             var user = Console.ReadLine() ?? String.Empty;
@@ -36,45 +38,46 @@ namespace MyApp
                 if (action == ActionType.PrintInv)
                 {
                     Console.WriteLine("Current Inventory");
-                    Helpers.ListItems(productService.Inventory);
+                    Helpers.ListItems(inventoryService.Inventory);
 
                 }
                 else if (action == ActionType.PrintCart)
                 {
                     Console.WriteLine("Current Cart");
-                    Helpers.ListItems(productService.Cart);
+                    Helpers.ListItems(cartService.Cart);
                     Console.Write("\n");
                 }
                 else if (action == ActionType.Create)
                 {
-                    productService.AddOrUpdate(Helpers.FillInventoryItem(null));
+                    inventoryService.AddOrUpdate(Helpers.FillInventoryItem(null));
                 }
                 else if (action == ActionType.Update)
                 {
                     var itemId = SelectInventoryItem("update");
-                    var itemToUpdate = productService.Inventory.FirstOrDefault(i => i.Id == itemId);
+                    var itemToUpdate = inventoryService.Inventory.FirstOrDefault(i => i.Id == itemId);
                     if (itemToUpdate != null)
                     {
-                        productService.AddOrUpdate(Helpers.FillInventoryItem(itemToUpdate));
+                        inventoryService.AddOrUpdate(Helpers.FillInventoryItem(itemToUpdate));
                     }
                 }
                 else if (action == ActionType.SetBogo )
                 {
                     var itemId = SelectInventoryItem("set BoGo status");
-                    var itemToUpdate = productService.Inventory.FirstOrDefault(i => i.Id == itemId);
+                    var itemToUpdate = inventoryService.Inventory.FirstOrDefault(i => i.Id == itemId);
                     if (itemToUpdate != null)
                     {
-                        productService.SetBoGoStatus(itemToUpdate);
+                        inventoryService.SetBoGoStatus(itemToUpdate);
                     }
                 }
                 else if (action == ActionType.Delete)
                 {
                     var indexToDelete = SelectInventoryItem("delete");
-                    productService.Delete(indexToDelete);
+                    inventoryService.Delete(indexToDelete);
                 }
                 else if (action == ActionType.Save)
                 {
-                    productService.Save();
+                    inventoryService.Save();
+                    cartService.Save();
                 }
                 else if (action == ActionType.Exit)
                 {
@@ -99,24 +102,24 @@ namespace MyApp
                 else if (action == ActionType.DeleteFromCart)
                 {
                     var indexToDelete = SelectCartItem("delete");
-                    productService.DeleteFromCart(indexToDelete);
+                    cartService.DeleteFromCart(indexToDelete);
                 }
                 else if (action == ActionType.Checkout)
                 {
                     Console.WriteLine("You have chosen to checkout.");
-                    productService.Checkout();
+                    cartService.Checkout();
                     Console.WriteLine($"Thank you for your business! ByeBye!");
                     cont = false;
                 }
                 else if (action == ActionType.SearchInv)
                 {
                     Console.WriteLine("Please enter your search query:");
-                    Helpers.ListItems(productService.Search(Console.ReadLine() ?? string.Empty, "inventory"));
+                    Helpers.ListItems(inventoryService.Search(Console.ReadLine() ?? string.Empty));
                 }
                 else if (action == ActionType.SearchCart)
                 {
                     Console.WriteLine("Please enter your search query:");
-                    Helpers.ListItems(productService.Search(Console.ReadLine() ?? string.Empty, "cart"));
+                    Helpers.ListItems(cartService.Search(Console.ReadLine() ?? string.Empty));
 
                 }
                 else if (action == ActionType.InvalidChoice)
@@ -214,7 +217,7 @@ namespace MyApp
 
         private static int SelectInventoryItem(string action)
         {
-            Helpers.ListItems(ProductService.Current.Inventory);
+            Helpers.ListItems(InventoryService.Current.Inventory);
             while (true)
             {
                 Console.WriteLine($"Which inventory item would you like to {action}?");
@@ -228,10 +231,10 @@ namespace MyApp
 
         private static int SelectCartItem(string action)
         {
-            Helpers.ListItems(ProductService.Current.Cart);
+            Helpers.ListItems(CartService.Current.Cart);
             while (true)
             {
-                Console.WriteLine($"Which inventory item would you like to {action}?");
+                Console.WriteLine($"Which cart item would you like to {action}?");
                 if (int.TryParse(Console.ReadLine(), out var id))
                 {
                     return id;

@@ -8,12 +8,23 @@ using Newtonsoft.Json;
 
 namespace Library.eCommerce.Services
 {
-    internal class CartService
+    public class CartService
     {
         private List<CartItem> cartList;
         public List<CartItem> Cart
         {
             get { return cartList; }
+        }
+
+        private static CartService? current;
+        public static CartService Current
+        {
+            get
+            {
+                if (current == null)
+                    current = new CartService();
+                return current;
+            }
         }
 
         private CartService()
@@ -22,7 +33,8 @@ namespace Library.eCommerce.Services
             query = String.Empty;
         }
 
-        public IEnumerable<CartItem> GetFilteredListCart(string? query)
+        
+        public IEnumerable<CartItem> GetFilteredListCart(string? query) //depricated
         {
             if (string.IsNullOrEmpty(query))
             {
@@ -113,13 +125,13 @@ namespace Library.eCommerce.Services
             }
         }
 
-        public void LoadCart()
+        public void Load()
         {
             var productCartJson = File.ReadAllText("SaveDataCart.json");
             cartList = JsonConvert.DeserializeObject<List<CartItem>>(productCartJson, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }) ?? new List<CartItem>();
         }
 
-        public void SaveCart()
+        public void Save()
         {
             var productCartJson = JsonConvert.SerializeObject(Cart, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             File.WriteAllText("SaveDataCart.json", productCartJson);

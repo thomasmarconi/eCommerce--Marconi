@@ -24,18 +24,23 @@ namespace eCommerce.Helpers
             Console.WriteLine("What is the description of the product?");
             var desc = Console.ReadLine();
 
-            Console.WriteLine("Enter product type: \"weight\" or \"quantity\"");
-            var weightOrQuan = Console.ReadLine();
-
             Console.WriteLine("Is product BoGo? (yes or no)");
             var BoGo = Console.ReadLine() ?? String.Empty;
-            if (BoGo != "yes" && BoGo != "no")
+            while (BoGo != "yes" && BoGo != "no")
             {
-                Console.WriteLine("Does not compute -- defaulting BoGo to no");
-                BoGo = "no";
+                Console.WriteLine("Invalid Entry -- Try Again");
+                BoGo = Console.ReadLine() ?? String.Empty;
             }
 
-            if (weightOrQuan == "quantity")
+            Console.WriteLine("Enter 1(ProductByQuantity) or 2(ProductByWeight)");
+            var weightOrQuan = Console.ReadLine() ?? String.Empty;
+            while (weightOrQuan != "1" && weightOrQuan != "2")
+            {
+                Console.WriteLine("Invalid Entry -- Try Again");
+                weightOrQuan = Console.ReadLine() ?? String.Empty;
+            } 
+
+            if (weightOrQuan == "1")
             {
                 while (true)
                 {

@@ -2,7 +2,7 @@
 using Library.eCommerce.Models;
 using Newtonsoft.Json;
 
-namespace Library.ECommerce.Services
+namespace Library.eCommerce.Services
 {
 	public class InventoryService
 	{
@@ -33,7 +33,7 @@ namespace Library.ECommerce.Services
 			query = String.Empty;
 		}
 
-		public IEnumerable<InventoryItem> GetFilteredList(string? query)
+		public IEnumerable<InventoryItem> GetFilteredList(string? query) //depricated
 		{
 			if (string.IsNullOrEmpty(query))
 			{
@@ -91,7 +91,7 @@ namespace Library.ECommerce.Services
 			}
 		}
 
-		public void LoadInventory()
+		public void Load()
 		{
 			var productInvJson = File.ReadAllText("SaveDataInv.json");
 			inventoryList = JsonConvert.DeserializeObject<List<InventoryItem>>(productInvJson, 
@@ -99,7 +99,7 @@ namespace Library.ECommerce.Services
 				new List<InventoryItem>();
 		}
 
-		public void SaveInventory()
+		public void Save()
 		{
 			var productInvJson = JsonConvert.SerializeObject(Inventory, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All});
 			File.WriteAllText("SaveDataInv.json", productInvJson);
