@@ -7,15 +7,20 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            string user;
             var productService = ProductService.Current;
             Console.WriteLine("Welcome to the Marconi's Magical Wares!");
-            Console.WriteLine("Enter 1 for customer, 2 for employee!");
-            user = Console.ReadLine() ?? String.Empty;
+            Console.WriteLine("Would you like to load saved cart/invetory data? (yes or no)");
+            var willLoad = Console.ReadLine() ?? String.Empty;
+            if(willLoad == "yes")
+            {
+                productService.Load();
+            }
+            Console.WriteLine("User Verification: Enter 1 for customer, 2 for employee!");
+            var user = Console.ReadLine() ?? String.Empty;
             ActionType action;
             bool cont = true;
             while (cont)
-            {
+            {   
                 if (user == "1")
                     action = CustomerPrintMenu();
                 else if (user == "2")
@@ -71,10 +76,6 @@ namespace MyApp
                 {
                     productService.Save();
                 }
-                else if (action == ActionType.Load)
-                {
-                    productService.Load();
-                }
                 else if (action == ActionType.Exit)
                 {
                     Console.WriteLine("You have chosen to exit. ByeBye!");
@@ -110,12 +111,12 @@ namespace MyApp
                 else if (action == ActionType.SearchInv)
                 {
                     Console.WriteLine("Please enter your search query:");
-                    Helpers.ListItems(productService.GetFilteredList(Console.ReadLine() ?? string.Empty));
+                    Helpers.ListItems(productService.Search(Console.ReadLine() ?? string.Empty, "inventory"));
                 }
                 else if (action == ActionType.SearchCart)
                 {
                     Console.WriteLine("Please enter your search query:");
-                    Helpers.ListItems(productService.GetFilteredListCart(Console.ReadLine() ?? string.Empty));
+                    Helpers.ListItems(productService.Search(Console.ReadLine() ?? string.Empty, "cart"));
 
                 }
                 else if (action == ActionType.InvalidChoice)
@@ -138,8 +139,7 @@ namespace MyApp
             Console.WriteLine("4. Set a Product's BoGo status");
             Console.WriteLine("5. Delete a Product");
             Console.WriteLine("6. Save Inventory");
-            Console.WriteLine("7. Load Inventory");
-            Console.WriteLine("8. Exit");
+            Console.WriteLine("7. Exit");
 
             string input = Console.ReadLine() ?? "0";
 
@@ -160,8 +160,6 @@ namespace MyApp
                     case "6":
                         return ActionType.Save;
                     case "7":
-                        return ActionType.Load;
-                    case "8":
                         return ActionType.Exit;
                     default:
                         return ActionType.InvalidChoice;
@@ -181,8 +179,7 @@ namespace MyApp
             Console.WriteLine("6. Search Inventory");
             Console.WriteLine("7. Search Cart");
             Console.WriteLine("8. Save Inventory/Cart");
-            Console.WriteLine("9. Load Inventory/Cart");
-            Console.WriteLine("10. Exit");
+            Console.WriteLine("9. Exit");
 
             string input = Console.ReadLine() ?? String.Empty;
 
@@ -207,8 +204,6 @@ namespace MyApp
                     case "8":
                         return ActionType.Save;
                     case "9":
-                        return ActionType.Load;
-                    case "10":
                         return ActionType.Exit;
                     default:
                         return ActionType.InvalidChoice;
@@ -250,7 +245,7 @@ namespace MyApp
     {
         PrintInv, PrintCart, Create, Update,
         Delete, Save, Load, Exit, AddToCart, DeleteFromCart,
-        Checkout, SearchInv, SearchCart, InvalidChoice, Dummy, SetBogo
+        Checkout, SearchInv, SearchCart, InvalidChoice, Dummy, SetBogo, SetSortType
     }
 
     

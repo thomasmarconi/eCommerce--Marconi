@@ -1,11 +1,15 @@
 ﻿using System;
 using Library.eCommerce.Models;
+using ListNavigator;
 namespace eCommerce.Helpers
 {
 	public class Helpers
 	{
-        internal static void ListItems(IEnumerable<object> list)
+        internal static void ListItems(IEnumerable<object> list, int pageSize = 5)
         {
+            var ListNav = new ListNavigator<object>(list, pageSize);
+
+
             foreach (var item in list)
             {
                 Console.WriteLine(item);

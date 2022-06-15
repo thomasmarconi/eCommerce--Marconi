@@ -8,7 +8,7 @@ namespace Library.eCommerce.Models
 		{
 			get
 			{
-				if(isBoGo)
+				if(isBoGo && Weight > 1)
 					return ((Weight/2) * Price);
 				else 
 					return (Weight * Price);
