@@ -325,5 +325,32 @@ namespace Library.ECommerce.Services
 			var BoGo = Console.ReadLine() ?? String.Empty;
 			item.isBoGo = BoGo == "yes";
         }
+
+		//implement ListNav
+		private string query;
+		private SortType sort;
+		public void Search(string query)
+        {
+			this.query = query;
+        }
+
+		public IEnumerable<InventoryItem> ProcessedList
+        {
+            get
+            {
+				if (string.IsNullOrEmpty(this.query))
+					return Inventory;
+				else 
+					return Inventory
+					.Where(i => string.IsNullOrEmpty(this.query) ||( (i?.Name?.ToUpper()?.Contains(this.query.ToUpper()) ?? false)
+					|| (i?.Description?.ToUpper()?.Contains(this.query.ToUpper()) ?? false))) //search -- filter
+					.OrderBy(i => this.sort);													//sort -- order
+            }
+        }
+
+		public enum SortType
+        {
+			Name, TotalPrice, UnitPrice
+        }
 	}
 }

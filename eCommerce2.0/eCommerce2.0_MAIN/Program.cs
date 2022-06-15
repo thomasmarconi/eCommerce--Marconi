@@ -99,17 +99,6 @@ namespace MyApp
                 {
                     var indexToDelete = SelectCartItem("delete");
                     productService.DeleteFromCart(indexToDelete);
-                    /*string product;
-                    int quantity;
-                    Console.WriteLine("You have chosen to delete a product from the cart.");
-                    Console.WriteLine("What product would you like to delete from the cart?");
-                    product = Console.ReadLine() ?? "";
-                    Console.WriteLine($"How many {product}s would you like to delete?");
-                    quantity = int.Parse(Console.ReadLine() ?? "0");
-                    if (productService.DeleteFromCart(product, quantity))
-                        Console.WriteLine("Product deleted from cart successfully!");
-                    else
-                        Console.WriteLine("Product failed to delete from cart.");*/
                 }
                 else if (action == ActionType.Checkout)
                 {
