@@ -33,7 +33,38 @@ namespace Library.eCommerce.Services
             query = String.Empty;
         }
 
-        
+        public void AddOrUpdate(CartItem item)
+        {
+            //Id management for adding a new record.
+            if (item.Id == 0)
+            {
+                if (cartList.Any())
+                {
+                    item.Id = cartList.Select(i => i.Id).Max() + 1;
+                }
+                else
+                {
+                    item.Id = 1;
+                }
+            }
+
+            if (!cartList.Any(i => i.Id == item.Id))
+            {
+                cartList.Add(item);
+            }
+        }
+
+        public int hasItemInCart(string nameToCheck) //returns item's iD if its in the cart
+        {
+            foreach(var item in Cart)
+            {
+                if (item.Name == nameToCheck)
+                    return item.Id;
+            }
+            return 0;
+        }
+
+
         public IEnumerable<CartItem> GetFilteredListCart(string? query) //depricated
         {
             if (string.IsNullOrEmpty(query))

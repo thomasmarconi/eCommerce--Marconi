@@ -18,7 +18,7 @@ namespace Library.eCommerce.Models
 		{
 		}
 
-		public CartItemByWeight(string name, string description, decimal price, decimal weight, int iD, bool BoGo)
+		public CartItemByWeight(string name, string description, decimal price, decimal weight, bool BoGo, int iD = 0)
 		{
 			Name = name;
 			Description = description;

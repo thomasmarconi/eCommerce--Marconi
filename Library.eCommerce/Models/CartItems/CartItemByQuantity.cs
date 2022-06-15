@@ -19,7 +19,7 @@ namespace Library.eCommerce.Models
 		{
 		}
 
-		public CartItemByQuantity(string name, string description, decimal price, int quantity, int iD, bool BoGo)
+		public CartItemByQuantity(string name, string description, decimal price, int quantity, bool BoGo, int iD = 0)
 		{
 			Name = name;
 			Description = description;

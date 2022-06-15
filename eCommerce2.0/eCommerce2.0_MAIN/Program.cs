@@ -10,8 +10,13 @@ namespace MyApp
             var inventoryService = InventoryService.Current;
             var cartService = CartService.Current;
             Console.WriteLine("Welcome to the Marconi's Magical Wares!");
-            Console.WriteLine("Would you like to load saved cart/invetory data? (yes or no)");
+            Console.WriteLine("Would you like to load saved cart/inventory data? (yes or no)");
             var willLoad = Console.ReadLine() ?? String.Empty;
+            while(willLoad != "yes" && willLoad != "no")
+            {
+                Console.WriteLine("Invalid Entry -- Try Again (yes or no)");
+                willLoad = Console.ReadLine() ?? String.Empty;
+            }
             if(willLoad == "yes")
             {
                 inventoryService.Load();
@@ -88,13 +93,11 @@ namespace MyApp
                 {
                     //need to determine whether the item that is wanting to be added is a byWeight or byQuantity
                     Console.WriteLine("Current Inventory");
-                    Helpers.ListItems(productService.Inventory);
+                    Helpers.ListItems(inventoryService.Inventory);
                     Console.WriteLine("You have chosen to add a product to the cart.");
                     Console.WriteLine("What product would you like to add to cart?");
                     var productId = int.Parse(Console.ReadLine() ?? string.Empty);
-                    Console.WriteLine("Enter amount of item to be added to cart.");
-                    var amount = decimal.Parse(Console.ReadLine() ?? string.Empty);
-                    if (productService.AddToCart(productId, amount))
+                    if (inventoryService.AddToCart(productId,cartService))
                         Console.WriteLine("Product added to cart successfully!");
                     else
                         Console.WriteLine("Product failed to add to cart.");

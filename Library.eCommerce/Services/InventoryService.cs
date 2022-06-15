@@ -82,13 +82,84 @@ namespace Library.eCommerce.Services
 			}
 		}
 
-		public bool AddToCart(int productId, decimal amount)
+		public bool AddToCart(int productId, CartService cart)
 		{
 			var itemToAdd = GetInventoryItemByID(productId);
-			if (itemToAdd != null)
+			if (itemToAdd == null)
 			{
-
+				return false;
 			}
+            else
+            {
+				if (itemToAdd is InventoryItemByQuantity)
+				{
+					var newItemToAdd = itemToAdd as InventoryItemByQuantity;
+					if (newItemToAdd != null)
+					{
+						//gotta decrement itemToAdd's quantity
+						Console.WriteLine($"How many {newItemToAdd.Name}s would you like to add to the cart?");
+						var amountToAdd = int.Parse(Console.ReadLine() ?? string.Empty);
+						if (amountToAdd > newItemToAdd.Quantity)
+						{
+							Console.WriteLine($"Not enough {newItemToAdd.Name}s in inventory. Adding max({newItemToAdd.Quantity}) items to cart.");
+							amountToAdd = newItemToAdd.Quantity;
+						}
+						if (cart.Cart.Count == 0) //cart is empty
+						{
+							cart.AddOrUpdate(new CartItemByQuantity(newItemToAdd.Name ?? String.Empty, newItemToAdd.Description ?? String.Empty, newItemToAdd.Price, amountToAdd, newItemToAdd.isBoGo));
+							return true;
+						}
+						else if (cart.hasItemInCart(newItemToAdd.Name ?? string.Empty) == 0) //cart doesn't contain the item
+						{
+							cart.AddOrUpdate(new CartItemByQuantity(newItemToAdd.Name ?? String.Empty, newItemToAdd.Description ?? String.Empty, newItemToAdd.Price, amountToAdd, newItemToAdd.isBoGo));
+							return true;
+						}
+						else if (cart.hasItemInCart(newItemToAdd.Name ?? string.Empty) != 0) //cart contains the item
+						{
+							cart.AddOrUpdate(new CartItemByQuantity(newItemToAdd.Name ?? String.Empty, newItemToAdd.Description ?? String.Empty, newItemToAdd.Price, amountToAdd, newItemToAdd.isBoGo, cart.hasItemInCart(newItemToAdd.Name ?? string.Empty)));
+							return true;
+						}
+						else
+							return false;
+					}
+					else
+						return false;
+				}
+				else if (itemToAdd is InventoryItemByWeight)
+				{
+					var newItemToAdd = itemToAdd as InventoryItemByWeight;
+					if (newItemToAdd != null)
+					{
+						Console.WriteLine($"How many lbs of {newItemToAdd.Name} would you like to add to the cart?");
+						var amountToAdd = decimal.Parse(Console.ReadLine() ?? string.Empty);
+						if (amountToAdd > newItemToAdd.Weight)
+						{
+							Console.WriteLine($"Not enough {newItemToAdd.Name}s in inventory. Adding max({newItemToAdd.Weight}) lbs to cart.");
+							amountToAdd = newItemToAdd.Weight;
+						}
+						if (cart.Cart.Count == 0) //cart is empty
+						{
+							cart.AddOrUpdate(new CartItemByWeight(newItemToAdd.Name ?? String.Empty, newItemToAdd.Description ?? String.Empty, newItemToAdd.Price, amountToAdd, newItemToAdd.isBoGo));
+							return true;
+						}
+						else if (cart.hasItemInCart(newItemToAdd.Name ?? string.Empty) == 0) //cart doesn't contain the item
+						{
+							cart.AddOrUpdate(new CartItemByWeight(newItemToAdd.Name ?? String.Empty, newItemToAdd.Description ?? String.Empty, newItemToAdd.Price, amountToAdd, newItemToAdd.isBoGo));
+							return true;
+						}
+						else if (cart.hasItemInCart(newItemToAdd.Name ?? string.Empty) != 0) //cart contains the item
+						{
+							cart.AddOrUpdate(new CartItemByWeight(newItemToAdd.Name ?? String.Empty, newItemToAdd.Description ?? String.Empty, newItemToAdd.Price, amountToAdd, newItemToAdd.isBoGo, cart.hasItemInCart(newItemToAdd.Name ?? string.Empty)));
+							return true;
+						}
+						else
+							return false;
+					}
+					else return false;
+				}
+				else
+					return false;
+            }
 		}
 
 		public void Load()
