@@ -43,13 +43,13 @@ namespace MyApp
                 if (action == ActionType.PrintInv)
                 {
                     Console.WriteLine("Current Inventory");
-                    Helpers.ListItems(inventoryService.Inventory);
+                    inventoryService.ListItems(inventoryService.Inventory);
 
                 }
                 else if (action == ActionType.PrintCart)
                 {
                     Console.WriteLine("Current Cart");
-                    Helpers.ListItems(cartService.Cart);
+                    cartService.ListItems(cartService.Cart);
                     Console.Write("\n");
                 }
                 else if (action == ActionType.Create)
@@ -58,7 +58,7 @@ namespace MyApp
                 }
                 else if (action == ActionType.Update)
                 {
-                    var itemId = SelectInventoryItem("update");
+                    var itemId = inventoryService.SelectInventoryItem("update");
                     var itemToUpdate = inventoryService.Inventory.FirstOrDefault(i => i.Id == itemId);
                     if (itemToUpdate != null)
                     {
@@ -67,7 +67,7 @@ namespace MyApp
                 }
                 else if (action == ActionType.SetBogo )
                 {
-                    var itemId = SelectInventoryItem("set BoGo status");
+                    var itemId = inventoryService.SelectInventoryItem("set BoGo status");
                     var itemToUpdate = inventoryService.Inventory.FirstOrDefault(i => i.Id == itemId);
                     if (itemToUpdate != null)
                     {
@@ -76,7 +76,7 @@ namespace MyApp
                 }
                 else if (action == ActionType.Delete)
                 {
-                    var indexToDelete = SelectInventoryItem("delete");
+                    var indexToDelete = inventoryService.SelectInventoryItem("delete");
                     inventoryService.Delete(indexToDelete);
                 }
                 else if (action == ActionType.Save)
@@ -93,7 +93,7 @@ namespace MyApp
                 {
                     //need to determine whether the item that is wanting to be added is a byWeight or byQuantity
                     Console.WriteLine("Current Inventory");
-                    Helpers.ListItems(inventoryService.Inventory);
+                    inventoryService.ListItems(inventoryService.Inventory);
                     Console.WriteLine("You have chosen to add a product to the cart.");
                     Console.WriteLine("What product would you like to add to cart?");
                     var productId = int.Parse(Console.ReadLine() ?? string.Empty);
@@ -104,7 +104,7 @@ namespace MyApp
                 }
                 else if (action == ActionType.DeleteFromCart)
                 {
-                    var indexToDelete = SelectCartItem("delete");
+                    var indexToDelete = cartService.SelectCartItem("delete");
                     cartService.DeleteFromCart(indexToDelete);
                 }
                 else if (action == ActionType.Checkout)
@@ -117,12 +117,12 @@ namespace MyApp
                 else if (action == ActionType.SearchInv)
                 {
                     Console.WriteLine("Please enter your search query:");
-                    Helpers.ListItems(inventoryService.Search(Console.ReadLine() ?? string.Empty));
+                    inventoryService.ListItems(inventoryService.Search(Console.ReadLine() ?? string.Empty));
                 }
                 else if (action == ActionType.SearchCart)
                 {
                     Console.WriteLine("Please enter your search query:");
-                    Helpers.ListItems(cartService.Search(Console.ReadLine() ?? string.Empty));
+                    cartService.ListItems(cartService.Search(Console.ReadLine() ?? string.Empty));
 
                 }
                 else if (action == ActionType.InvalidChoice)
@@ -218,33 +218,9 @@ namespace MyApp
             }
         }
 
-        private static int SelectInventoryItem(string action)
-        {
-            Helpers.ListItems(InventoryService.Current.Inventory);
-            while (true)
-            {
-                Console.WriteLine($"Which inventory item would you like to {action}?");
-                if (int.TryParse(Console.ReadLine(), out var id))
-                {
-                    return id;
-                }
-            }
+        
 
-        }
-
-        private static int SelectCartItem(string action)
-        {
-            Helpers.ListItems(CartService.Current.Cart);
-            while (true)
-            {
-                Console.WriteLine($"Which cart item would you like to {action}?");
-                if (int.TryParse(Console.ReadLine(), out var id))
-                {
-                    return id;
-                }
-            }
-
-        }
+        
     }
 
     public enum ActionType

@@ -5,7 +5,7 @@ namespace eCommerce.Helpers
 {
 	public class Helpers
 	{
-        internal static void ListItems(IEnumerable<object> list)
+        internal static void ListItems(IEnumerable<object> list) //depricated
         {
             foreach (object item in list)
                 Console.WriteLine(item);

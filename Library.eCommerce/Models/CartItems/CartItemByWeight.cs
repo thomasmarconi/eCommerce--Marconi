@@ -30,9 +30,9 @@ namespace Library.eCommerce.Models
 
 		public override string ToString()
 		{
-			var BoGo = "no";
+			var BoGo = "No";
 			if (isBoGo)
-				BoGo = "yes";
+				BoGo = "Yes";
 			return $"#{Id}. {Name} :: {Description} -- Price: {Price}, Weight: {Weight} lbs, BoGo: {BoGo} Total Price: {TotalPrice}";
 		}
 	}

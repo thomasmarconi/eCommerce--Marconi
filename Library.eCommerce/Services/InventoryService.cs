@@ -45,7 +45,19 @@ namespace Library.eCommerce.Services
 					|| (i?.Description?.ToUpper()?.Contains(query.ToUpper()) ?? false));
 		}
 
-		
+		public int SelectInventoryItem(string action)
+		{
+			ListItems(Inventory);
+			while (true)
+			{
+				Console.WriteLine($"Which inventory item would you like to {action}?");
+				if (int.TryParse(Console.ReadLine(), out var id))
+				{
+					return id;
+				}
+			}
+
+		}
 
 		public InventoryItem GetInventoryItemByID(int iD)
         {
@@ -217,32 +229,23 @@ namespace Library.eCommerce.Services
 					return Inventory;
 				else
 				{
-					SetSortType();
 					var unorderedList = Inventory
 					.Where(i => string.IsNullOrEmpty(this.query) || ((i?.Name?.ToUpper()?.Contains(this.query.ToUpper()) ?? false)
 					|| (i?.Description?.ToUpper()?.Contains(this.query.ToUpper()) ?? false))); //search -- filter 
-					if (sort == SortType.Name)
-						return unorderedList.OrderBy(i => i.Name);
-					else if (sort == SortType.Price)
-						return unorderedList.OrderBy(i => i.Price);
-					else //sort == SortType.ID
-						return unorderedList.OrderBy(i => i.Id);
+					return OrderList(unorderedList);
 				}
 			}
         }
-		public IEnumerable<InventoryItem> OrderedList
+		public IEnumerable<InventoryItem> OrderList(IEnumerable<object> list)
 		{
-			get
-			{
-				SetSortType();
-				var unorderedList = Inventory;
-				if (sort == SortType.Name)
-					return unorderedList.OrderBy(i => i.Name);
-				else if (sort == SortType.Price)
-					return unorderedList.OrderBy(i => i.Price);
-				else //sort == SortType.ID
-					return unorderedList.OrderBy(i => i.Id);
-			}
+			SetSortType();
+			var unorderedList = list as IEnumerable<InventoryItem> ?? new List<InventoryItem>();
+			if (sort == SortType.Name)
+				return unorderedList.OrderBy(i => i.Name);
+			else if (sort == SortType.Price)
+				return unorderedList.OrderBy(i => i.Price);
+			else //sort == SortType.ID
+				return unorderedList.OrderBy(i => i.Id);
 		}
 
 		public void ListItems(IEnumerable<object> list, int pageSize = 5)
@@ -260,7 +263,9 @@ namespace Library.eCommerce.Services
 				choice = Console.ReadLine() ?? String.Empty;
 				if (choice == "s")
 				{
-					ListNav = new ListNavigator<object>(OrderedList, pageSize);
+					ListNav = new ListNavigator<object>(OrderList(list), pageSize);
+					try { ListNav.PrintItems(ListNav.GetCurrentPage()); }
+					catch (Exception ex) { ex.GetBaseException(); }
 				}
 				else if (choice == "d")
 					try { ListNav.PrintItems(ListNav.GoForward()); }
@@ -281,6 +286,7 @@ namespace Library.eCommerce.Services
 			Console.WriteLine("How would you like to order the list?");
 			Console.WriteLine("1. Sort by name.");
 			Console.WriteLine("2. Sort by unit price.");
+			Console.WriteLine("3. Sort by ID.");
 			var choice = Console.ReadLine() ?? string.Empty;
 			switch(choice)
             {
@@ -291,9 +297,10 @@ namespace Library.eCommerce.Services
 					this.sort = SortType.Price;
 					return;
 				default:
-					Console.WriteLine("Invalid Choice -- Defaulting to order by id.");
+				{ 
 					this.sort = SortType.ID;
 					return;
+				}
             }
 
 		}
