@@ -5,15 +5,10 @@ namespace eCommerce.Helpers
 {
 	public class Helpers
 	{
-        internal static void ListItems(IEnumerable<object> list, int pageSize = 5)
+        internal static void ListItems(IEnumerable<object> list)
         {
-            var ListNav = new ListNavigator<object>(list, pageSize);
-
-
-            foreach (var item in list)
-            {
+            foreach (object item in list)
                 Console.WriteLine(item);
-            }
         }
 
         internal static InventoryItem FillInventoryItem(InventoryItem? invItem)

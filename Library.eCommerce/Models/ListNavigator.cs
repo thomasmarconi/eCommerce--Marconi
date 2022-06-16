@@ -105,6 +105,12 @@ namespace ListNavigator
 
             return window;
         }
+
+        public void PrintItems(Dictionary<int, object> keyValues)
+        {
+            foreach (var item in keyValues.Values)
+                Console.WriteLine($"{item.ToString()}");
+        }
     }
 
     public class PageFaultException : Exception {

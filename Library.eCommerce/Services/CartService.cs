@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.eCommerce.Models;
 using Newtonsoft.Json;
+using ListNavigator;
 
 namespace Library.eCommerce.Services
 {
@@ -54,7 +55,13 @@ namespace Library.eCommerce.Services
             }
         }
 
-        public int hasItemInCart(string nameToCheck) //returns item's iD if its in the cart
+        public CartItem GetCartItemByID(int iD)
+        {
+            return Cart.FirstOrDefault(i =>
+                    (i?.Id.Equals(iD) ?? false)) ?? new CartItem();
+        }
+
+        public int HasItemInCart(string nameToCheck) //returns item's iD if its in the cart
         {
             foreach(var item in Cart)
             {
@@ -64,6 +71,15 @@ namespace Library.eCommerce.Services
             return 0;
         }
 
+        public int GetCartItemQuantity(CartItemByQuantity item)
+        {
+            return item.Quantity;
+        }
+
+        public decimal GetCartItemWeight(CartItemByWeight item)
+        {
+            return item.Weight;
+        }
 
         public IEnumerable<CartItem> GetFilteredListCart(string? query) //depricated
         {
@@ -74,12 +90,6 @@ namespace Library.eCommerce.Services
             return Cart.Where(i =>
                     (i?.Name?.ToUpper()?.Contains(query.ToUpper()) ?? false)
                     || (i?.Description?.ToUpper()?.Contains(query.ToUpper()) ?? false));
-        }
-
-        public CartItem GetCartItemByID(int iD)
-        {
-            return Cart.FirstOrDefault(i =>
-                    (i?.Id.Equals(iD) ?? false)) ?? new CartItem();
         }
 
         public void DeleteFromCart(int id)
@@ -185,7 +195,7 @@ namespace Library.eCommerce.Services
                     return Cart;
                 else
                 {
-                    setSortType();
+                    SetSortType();
                     var unorderedList = Cart
                     .Where(i => string.IsNullOrEmpty(this.query) || ((i?.Name?.ToUpper()?.Contains(this.query.ToUpper()) ?? false)
                     || (i?.Description?.ToUpper()?.Contains(this.query.ToUpper()) ?? false))); //search -- filter 
@@ -199,7 +209,54 @@ namespace Library.eCommerce.Services
             }
         }
 
-        public void setSortType()
+        public IEnumerable<CartItem> OrderedList
+        {
+            get
+            {
+                SetSortType();
+                var unorderedList = Cart;
+                if (sort == SortType.Name)
+                    return unorderedList.OrderBy(i => i.Name);
+                else if (sort == SortType.TotalPrice)
+                    return unorderedList.OrderBy(i => i.TotalPrice);
+                else //sort == SortType.ID
+                    return unorderedList.OrderBy(i => i.Id);
+            }
+        }
+
+        public void ListItems(IEnumerable<object> list, int pageSize = 5)
+        {
+            ListNavigator<object> ListNav = new ListNavigator<object>(list, pageSize);
+            string choice;
+            ListNav.PrintItems(ListNav.GoToFirstPage());
+            do
+            {
+                if (ListNav.HasNextPage)
+                    Console.Write("Press d to display NEXT page. ");
+                if (ListNav.HasPreviousPage)
+                    Console.Write("Press a to display PREVIOUS page. ");
+                Console.WriteLine("Press s to select SORT type. Press x to EXIT list view.");
+                choice = Console.ReadLine() ?? String.Empty;
+                if (choice == "s")
+                {
+                    ListNav = new ListNavigator<object>(OrderedList, pageSize);
+                }
+                else if (choice == "d")
+                    try { ListNav.PrintItems(ListNav.GoForward()); }
+                    catch (Exception ex) { ex.GetBaseException(); }
+                else if (choice == "a")
+                    try { ListNav.PrintItems(ListNav.GoBackward()); }
+                    catch (Exception ex) { ex.GetBaseException(); }
+                else
+                {
+                    Console.WriteLine("Invalid Choice -- Try Again");
+                    try { ListNav.PrintItems(ListNav.GetCurrentPage()); }
+                    catch (Exception ex) { ex.GetBaseException(); }
+                }
+            } while (choice != "x");
+        }
+
+        public void SetSortType()
         {
             Console.WriteLine("How would you like to order the cart?");
             Console.WriteLine("1. Sort by name.");
@@ -223,6 +280,8 @@ namespace Library.eCommerce.Services
             }
 
         }
+
+        
 
         public enum SortType
         {
