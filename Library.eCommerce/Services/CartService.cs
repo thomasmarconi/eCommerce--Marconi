@@ -125,9 +125,9 @@ namespace Library.eCommerce.Services
             }
             var taxAmount = subtotal * (decimal).07;
             Console.WriteLine("----------------------------------");
-            Console.WriteLine($"Subtotal is: {subtotal}");
-            Console.WriteLine($"Tax is: {taxAmount}");
-            Console.WriteLine($"Total is: {subtotal + taxAmount}\n");
+            Console.WriteLine($"Subtotal is: {Math.Round(subtotal, 2, MidpointRounding.AwayFromZero)}");
+            Console.WriteLine($"Tax is: {Math.Round(taxAmount,2,MidpointRounding.AwayFromZero)}");
+            Console.WriteLine($"Total is: {Math.Round(subtotal + taxAmount,2,MidpointRounding.AwayFromZero)}\n");
             PaymentMethod();
         }
 

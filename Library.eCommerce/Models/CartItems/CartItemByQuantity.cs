@@ -8,8 +8,10 @@ namespace Library.eCommerce.Models
 		{
 			get
 			{
-				if (isBoGo && Quantity > 1)
+				if (isBoGo && Quantity > 1 && Quantity % 2 == 0)
 					return ((Quantity / 2) * Price);
+				else if (isBoGo && Quantity > 1 && Quantity % 2 == 1)
+					return ((Quantity / 2 + 1) * Price);
 				else
 					return (Quantity * Price);
 			}

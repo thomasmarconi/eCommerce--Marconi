@@ -273,6 +273,8 @@ namespace Library.eCommerce.Services
 				else if (choice == "a")
 					try { ListNav.PrintItems(ListNav.GoBackward()); }
 					catch (Exception ex) { ex.GetBaseException(); }
+				else if (choice == "x")
+					break;
 				else
 				{
 					Console.WriteLine("Invalid Choice -- Try Again");
