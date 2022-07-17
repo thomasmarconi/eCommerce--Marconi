@@ -21,6 +21,7 @@ namespace eCommerce.UWP.Dialogs
 {
     public sealed partial class PaymentDialog : ContentDialog
     {
+        
         public PaymentDialog()
         {
             this.InitializeComponent();
@@ -37,7 +38,7 @@ namespace eCommerce.UWP.Dialogs
                     CartService.Current.Delete(product.Id);
                 }
             }
-            CartService.Current.Checkout(viewModel.SelectedLoad);
+            CartService.Current.Checkout("dummy");
 
         }
 

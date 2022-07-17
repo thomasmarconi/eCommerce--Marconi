@@ -33,6 +33,7 @@ namespace Library.eCommerce.Services
                 return savedCartNames;
             }
         }
+        private String mostRecentCart;
 
         private static CartService current;
         public static CartService Current
@@ -168,7 +169,8 @@ namespace Library.eCommerce.Services
 
         public void Checkout(String filename = null)
         {
-            SavedCartNames.Remove(filename);
+            SavedCartNames.Remove(mostRecentCart);
+            Save();
         }
 
         private void PaymentMethod()
@@ -226,6 +228,7 @@ namespace Library.eCommerce.Services
         }
         public void Load(string fileName = null)
         {
+            mostRecentCart = fileName;
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = $"{persistPath}\\CartSaveData.json";
@@ -238,6 +241,7 @@ namespace Library.eCommerce.Services
             cartList = JsonConvert.DeserializeObject<List<CartItem>>
                 (cartJson, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
                 ?? new List<CartItem>();
+            
 
         }
 
