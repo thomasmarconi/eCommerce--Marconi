@@ -1,0 +1,52 @@
+﻿<ContentDialog
+    x:Class="eCommerce.UWP.Dialogs.PaymentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:eCommerce.UWP.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Enter Payment Credentials"
+    PrimaryButtonText="Confirm"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" Content="Visa"></RadioButton>
+            <RadioButton Grid.Column="1" Content="DiscoverCard"></RadioButton>
+            <RadioButton Grid.Column="2" Content="American Express"></RadioButton>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Credit Card Number"></TextBlock>
+            <TextBox Grid.Column="1"></TextBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Security Code"></TextBlock>
+            <TextBox Grid.Column="1"></TextBox>
+            <TextBlock Grid.Column="2" Text="Exp:"></TextBlock>
+            <TextBox Grid.Column="3"></TextBox>
+        </Grid>
+    </Grid>
+</ContentDialog>
