@@ -74,27 +74,45 @@ namespace Library.eCommerce.Services
 
 		public void AddOrUpdate(InventoryItem item)
 		{
-			//Id management for adding a new record.
-			if (item.Id == 0)
-			{
-				if (inventoryList.Any())
+            //Id management for adding a new record.
+            if (item.Id == 0)
+            {
+                if (inventoryList.Any())
+                {
+                    item.Id = inventoryList.Select(i => i.Id).Max() + 1;
+                }
+                else
+                {
+                    item.Id = 1;
+                }
+            }
+            if (item is InventoryItemByQuantity)
+            {
+				var oldVersion = inventoryList.FirstOrDefault(i =>i.Id.Equals(item.Id));
+				if(oldVersion != null)
+                {
+					var index = inventoryList.IndexOf(oldVersion);
+					inventoryList.RemoveAt(index);
+					inventoryList.Insert(index, item);
+                }
+                else
+                {
+					inventoryList.Add(item);
+                }
+            }
+            else if(item is InventoryItemByWeight)
+            {
+				var oldVersion = inventoryList.FirstOrDefault(i => i.Id.Equals(item.Id));
+				if (oldVersion != null)
 				{
-					item.Id = inventoryList.Select(i => i.Id).Max() + 1;
+					var index = inventoryList.IndexOf(oldVersion);
+					inventoryList.RemoveAt(index);
+					inventoryList.Insert(index, item);
 				}
 				else
 				{
-					item.Id = 1;
+					inventoryList.Add(item);
 				}
-			}
-			
-			if (!inventoryList.Any(i => i.Id == item.Id)) //if the id is not in the list
-			{
-				inventoryList.Add(item);
-			}
-			else if(inventoryList.Any(i => i.Id == item.Id)) //if the id is in the list
-            {
-				inventoryList.Remove(inventoryList.ElementAt(item.Id - 1));
-				inventoryList.Add(item);
 			}
 		}
 

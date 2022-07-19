@@ -44,8 +44,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Foreground="White" Style="{StaticResource SubheaderTextBlockStyle}" HorizontalAlignment="Stretch" Text="Inventory"></TextBlock>
-            <TextBlock Grid.Column="1" Foreground="White" Style="{StaticResource SubheaderTextBlockStyle}" HorizontalAlignment="Stretch" Text="Cart"></TextBlock>
+            <TextBlock Grid.Column="0" Foreground="White" Style="{StaticResource SubheaderTextBlockStyle}" HorizontalAlignment="Stretch" Text=" Inventory"></TextBlock>
+            <TextBlock Grid.Column="1" Foreground="White" Style="{StaticResource SubheaderTextBlockStyle}" HorizontalAlignment="Stretch" Text=" Cart"></TextBlock>
         </Grid>
 
         <Grid Grid.Row="2">

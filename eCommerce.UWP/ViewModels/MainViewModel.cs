@@ -111,7 +111,10 @@ namespace eCommerce.UWP.ViewModels
             ContentDialog diag = new LoadDialog();
             await diag.ShowAsync();
             NotifyPropertyChanged("Inventory");
-            NotifyPropertyChanged("Cart");  
+            NotifyPropertyChanged("Cart");
+            NotifyPropertyChanged("Subtotal");
+            NotifyPropertyChanged("Tax");
+            NotifyPropertyChanged("Total");
         }
 
         public async Task Add(ProductType pType)
