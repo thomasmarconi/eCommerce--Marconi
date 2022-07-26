@@ -27,6 +27,8 @@ namespace eCommerce.UWP.ViewModels
                 }
 
                 BoundItem.Name = value;
+                BoundInvByWeight.Name = value;
+                BoundInvByQuan.Name = value;
             }
         }
 
@@ -45,6 +47,8 @@ namespace eCommerce.UWP.ViewModels
                 }
 
                 BoundItem.Description = value;
+                BoundInvByWeight.Description = value;
+                BoundInvByQuan.Description = value;
             }
         }
 
@@ -63,6 +67,8 @@ namespace eCommerce.UWP.ViewModels
                 }
 
                 BoundItem.Price = value;
+                BoundInvByWeight.Price = value;
+                BoundInvByQuan.Price = value;
             }
         }
 
@@ -81,6 +87,8 @@ namespace eCommerce.UWP.ViewModels
                 }
 
                 BoundItem.isBoGo = value;
+                BoundInvByWeight.isBoGo = value;
+                BoundInvByQuan.isBoGo = value;
             }
         }
 
@@ -130,6 +138,10 @@ namespace eCommerce.UWP.ViewModels
 
         public int Id
         {
+            get
+            {
+                return BoundItem?.Id ?? 0;
+            }
             set
             {
                 if (BoundItem == null)
@@ -138,10 +150,30 @@ namespace eCommerce.UWP.ViewModels
                 }
 
                 BoundItem.Id = value;
+                BoundInvByWeight.Id = value;
+                BoundInvByQuan.Id = value;
             }
+
+        }
+
+        public double AmountToAdd
+        {
             get
             {
-                return BoundItem?.Id ?? 0;
+                return BoundItem?.AmountToAdd ?? 0;
+            }
+
+            set
+            {
+                if (BoundItem == null)
+                {
+                    return;
+                }
+
+                BoundItem.AmountToAdd = value;
+                BoundInvByWeight.AmountToAdd = value;
+                BoundInvByQuan.AmountToAdd = value;
+
             }
         }
 
@@ -166,23 +198,7 @@ namespace eCommerce.UWP.ViewModels
                 return 0;
             }
         }
-        public double AmountToAdd
-        {
-            get
-            {
-                return BoundItem?.AmountToAdd ?? 0;
-            }
-
-            set
-            {
-                if (BoundItem == null)
-                {
-                    return;
-                }
-
-                BoundItem.AmountToAdd = value;
-            }
-        }
+        
 
         public static InventoryItemByWeight InventoryItemByWeight(ItemViewModel vm)
         {

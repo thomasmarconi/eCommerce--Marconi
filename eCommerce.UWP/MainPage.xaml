@@ -14,6 +14,8 @@
             <!--Search Bar-->
             <RowDefinition/>
             <!--List Descriptions-->
+            <RowDefinition Height=".5*"/>
+            <!--Labels-->
             <RowDefinition Height="17*"/>
             <!--List View-->
             <RowDefinition/>
@@ -48,7 +50,60 @@
             <TextBlock Grid.Column="1" Foreground="White" Style="{StaticResource SubheaderTextBlockStyle}" HorizontalAlignment="Stretch" Text=" Cart"></TextBlock>
         </Grid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Background="SlateGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".42*"/> <!--ID-->
+                    <ColumnDefinition/> <!--Name-->
+                    <ColumnDefinition Width="1.5*"/> <!--Decription-->
+                    <ColumnDefinition Width=".7*"/> <!--Price-->
+                    <ColumnDefinition Width="1.2*"/> <!--Weight/Quantity-->
+                    <ColumnDefinition Width=".69*"/> <!--BoGo-->
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="   ID"></TextBlock>
+                <TextBlock Grid.Column="1" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Name"></TextBlock>
+                <TextBlock Grid.Column="2" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Description"></TextBlock>
+                <TextBlock Grid.Column="3" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Price $"></TextBlock>
+                <TextBlock Grid.Column="4" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Weight/Quantity"></TextBlock>
+                <TextBlock Grid.Column="5" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="BoGo"></TextBlock>
+
+            </Grid>
+
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".42*"/>
+                    <!--ID-->
+                    <ColumnDefinition/>
+                    <!--Name-->
+                    <ColumnDefinition Width="1.5*"/>
+                    <!--Decription-->
+                    <ColumnDefinition Width=".7*"/>
+                    <!--Price-->
+                    <ColumnDefinition Width="1.2*"/>
+                    <!--Weight/Quantity-->
+                    <ColumnDefinition Width=".69*"/>
+                    <!--BoGo-->
+                    <ColumnDefinition Width=".69*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="   ID"></TextBlock>
+                <TextBlock Grid.Column="1" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Name"></TextBlock>
+                <TextBlock Grid.Column="2" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Description"></TextBlock>
+                <TextBlock Grid.Column="3" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Price $"></TextBlock>
+                <TextBlock Grid.Column="4" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="Weight/Quantity"></TextBlock>
+                <TextBlock Grid.Column="5" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="BoGo"></TextBlock>
+                <TextBlock Grid.Column="6" Foreground="White" Style="{StaticResource BaseTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="TotalPrice:"></TextBlock>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -65,45 +120,42 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
-                                <RowDefinition/>
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" FontSize="18" Text="{Binding Path=Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
 
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width=".7*"/>
-                                    <ColumnDefinition Width="1.3*"/>
-                                    <ColumnDefinition Width=".7*"/>
-                                    <ColumnDefinition Width="1.3*"/>
-                                    <ColumnDefinition Width=".67*"/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width=".7*"/>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width=".55*"/>
-                                    <ColumnDefinition Width=".5*"/>
+                                    <ColumnDefinition Width=".25*"/> <!--ID-->
+                                    <ColumnDefinition Width=".63*"/>             <!--Name-->
+                                    <ColumnDefinition Width="1*"/><!--Decription-->
+                                    <ColumnDefinition Width=".45*"/>             <!--Price-->
+                                    <ColumnDefinition Width=".3*"/>             <!--Weight/Quantity Label-->
+                                    <ColumnDefinition Width=".5*"/>             <!--Weight/Quantity Value-->
+                                    <ColumnDefinition Width=".4*"/> <!--BoGo-->
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" HorizontalAlignment="Stretch" Text="Name:"></TextBlock>
-                                <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Path=Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                                <TextBlock Grid.Column="2" HorizontalAlignment="Stretch" Text=" Desc:"></TextBlock>
-                                <TextBlock Grid.Column="3" HorizontalAlignment="Stretch" Text="{Binding Path=Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                                <TextBlock Grid.Column="4" HorizontalAlignment="Stretch" Text=" Price$"></TextBlock>
-                                <TextBlock Grid.Column="5" HorizontalAlignment="Stretch" Text="{Binding Path=Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <TextBlock Grid.Column="0" FontSize="18" Text="{Binding Path=Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                
-                                <Grid Grid.Column="6"  Visibility="{Binding Path=IsQuantityVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <TextBlock Grid.Column="6" HorizontalAlignment="Stretch" Text="Quan:"></TextBlock>
+                                <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Path=Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+                                <TextBlock Grid.Column="2" HorizontalAlignment="Stretch" Text="{Binding Path=Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+                                <TextBlock Grid.Column="3" HorizontalAlignment="Stretch" Text="{Binding Path=Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                               
+                                <Grid Grid.Column="4"  Visibility="{Binding Path=IsQuantityVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock Grid.Column="4" HorizontalAlignment="Stretch" Text="Quan:"></TextBlock>
                                 </Grid>
-                                <Grid Grid.Column="6"  Visibility="{Binding Path=IsWeightVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <TextBlock Grid.Column="6" HorizontalAlignment="Stretch" Text="Weight:"></TextBlock>
+                                <Grid Grid.Column="4"  Visibility="{Binding Path=IsWeightVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock Grid.Column="4" HorizontalAlignment="Stretch" Text="Weight:"></TextBlock>
                                 </Grid>
-                                <Grid Grid.Column="7"  Visibility="{Binding Path=IsQuantityVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <TextBlock Grid.Column="7" HorizontalAlignment="Stretch" Text="{Binding Path=Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <Grid Grid.Column="5"  Visibility="{Binding Path=IsQuantityVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock Grid.Column="5" HorizontalAlignment="Stretch" Text="{Binding Path=Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                 </Grid>
-                                <Grid Grid.Column="7"  Visibility="{Binding Path=IsWeightVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <TextBlock Grid.Column="7" HorizontalAlignment="Stretch" Text="{Binding Path=Weight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <Grid Grid.Column="5"  Visibility="{Binding Path=IsWeightVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock Grid.Column="5" HorizontalAlignment="Stretch" Text="{Binding Path=Weight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                 </Grid>
-                                <TextBlock Grid.Column="8" HorizontalAlignment="Stretch" Text="BoGo:"></TextBlock>
-                                <TextBlock Grid.Column="9" HorizontalAlignment="Stretch" Text="{Binding Path=isBogo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+                                <TextBlock Grid.Column="6" HorizontalAlignment="Stretch" Text="{Binding Path=isBogo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                             </Grid>
                         </Grid>
                     </DataTemplate>
@@ -133,45 +185,46 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0" FontSize="18" Text="{Binding Path=Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                    
 
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width=".9*"/>
-                                            <ColumnDefinition Width="1.3*"/>
-                                            <ColumnDefinition Width=".7*"/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width=".8*"/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width=".8*"/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width="1.4*"/>
-                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width=".25*"/>
+                                            <!--ID-->
+                                            <ColumnDefinition Width=".63*"/>
+                                            <!--Name-->
+                                            <ColumnDefinition Width="1*"/>
+                                            <!--Decription-->
+                                            <ColumnDefinition Width=".45*"/>
+                                            <!--Price-->
+                                            <ColumnDefinition Width=".3*"/>
+                                            <!--Weight/Quantity Label-->
+                                            <ColumnDefinition Width=".5*"/>
+                                            <!--Weight/Quantity Value-->
+                                            <ColumnDefinition Width=".45*"/>
+                                            <!--BoGo-->
+                                            <ColumnDefinition Width=".4*"/>
+                                            <!--TotalPrice-->
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" HorizontalAlignment="Stretch" Text="Name:"></TextBlock>
+                                        <TextBlock Grid.Row="0" FontSize="18" Text="{Binding Path=Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                         <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Path=Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                                        <TextBlock Grid.Column="2" HorizontalAlignment="Stretch" Text="Desc:"></TextBlock>
-                                        <TextBlock Grid.Column="3" HorizontalAlignment="Stretch" Text="{Binding Path=Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                                        <TextBlock Grid.Column="4" HorizontalAlignment="Stretch" Text="Price$"></TextBlock>
-                                        <TextBlock Grid.Column="5" HorizontalAlignment="Stretch" Text="{Binding Path=Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                                        <Grid Grid.Column="6"  Visibility="{Binding Path=IsQuantityVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <TextBlock Grid.Column="6" HorizontalAlignment="Stretch" Text="Quan:"></TextBlock>
+                                        <TextBlock Grid.Column="2" HorizontalAlignment="Stretch" Text="{Binding Path=Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                        <TextBlock Grid.Column="3" HorizontalAlignment="Stretch" Text="{Binding Path=Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                        <Grid Grid.Column="4"  Visibility="{Binding Path=IsQuantityVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <TextBlock Grid.Column="4" HorizontalAlignment="Stretch" Text="Quan:"></TextBlock>
                                         </Grid>
-                                        <Grid Grid.Column="6"  Visibility="{Binding Path=IsWeightVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <TextBlock Grid.Column="6" HorizontalAlignment="Stretch" Text="Weight:"></TextBlock>
+                                        <Grid Grid.Column="4"  Visibility="{Binding Path=IsWeightVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <TextBlock Grid.Column="4" HorizontalAlignment="Stretch" Text="Weight:"></TextBlock>
                                         </Grid>
-                                        <Grid Grid.Column="7"  Visibility="{Binding Path=IsQuantityVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <TextBlock Grid.Column="7" HorizontalAlignment="Stretch" Text="{Binding Path=Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                        <Grid Grid.Column="5"  Visibility="{Binding Path=IsQuantityVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <TextBlock Grid.Column="5" HorizontalAlignment="Stretch" Text="{Binding Path=Quantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                         </Grid>
-                                        <Grid Grid.Column="7"  Visibility="{Binding Path=IsWeightVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <TextBlock Grid.Column="7" HorizontalAlignment="Stretch" Text="{Binding Path=Weight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                        <Grid Grid.Column="5"  Visibility="{Binding Path=IsWeightVisibleCart, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <TextBlock Grid.Column="5" HorizontalAlignment="Stretch" Text="{Binding Path=Weight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                         </Grid>
-                                        <TextBlock Grid.Column="8" HorizontalAlignment="Stretch" Text="BoGo:"></TextBlock>
-                                        <TextBlock Grid.Column="9" HorizontalAlignment="Stretch" Text="{Binding Path=isBogo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-                                        <TextBlock Grid.Column="10" HorizontalAlignment="Stretch" Text="TotalPrice:"></TextBlock>
-                                        <TextBlock Grid.Column="11" HorizontalAlignment="Stretch" Text="{Binding Path=TotalPrice, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                        <TextBlock Grid.Column="6" HorizontalAlignment="Stretch" Text="{Binding Path=isBogo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+                                        <TextBlock Grid.Column="7" HorizontalAlignment="Stretch" Text="{Binding Path=TotalPrice, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -206,7 +259,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1.5*"/>

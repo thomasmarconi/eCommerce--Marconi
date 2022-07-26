@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.eCommerce.Models;
 using Newtonsoft.Json;
-using ListNavigator;
+using Library.eCommerce.Standard.Utility;
 using System.IO;
 using System.Collections.ObjectModel;
 
@@ -73,22 +73,28 @@ namespace Library.eCommerce.Services
 
         public void AddOrUpdate(CartItem item)
         {
-            //Id management for adding a new record.
-            if (item.Id == 0)
-            {
-                if (cartList.Any())
-                {
-                    item.Id = cartList.Select(i => i.Id).Max() + 1;
-                }
-                else
-                {
-                    item.Id = 1;
-                }
-            }
-
             if (!cartList.Any(i => i.Id == item.Id))
             {
                 cartList.Add(item);
+            }
+            else
+            {
+                RaiseAmount(item);
+            }
+        }
+
+        public void RaiseAmount(CartItem item)
+        {
+            if(item is CartItemByQuantity)
+            {
+                var itemToUpdate = cartList.FirstOrDefault(i => i.Id == item.Id);
+                if (itemToUpdate != null)
+                    (itemToUpdate as CartItemByQuantity).Quantity += (item as CartItemByQuantity).Quantity;
+            }else if (item is CartItemByWeight)
+            {
+                var itemToUpdate = cartList.FirstOrDefault(i => i.Id == item.Id);
+                if (itemToUpdate != null)
+                    (itemToUpdate as CartItemByWeight).Weight += (item as CartItemByWeight).Weight;
             }
         }
 
@@ -149,6 +155,10 @@ namespace Library.eCommerce.Services
             if (itemToDelete != null)
             {
                 cartList.Remove(itemToDelete);
+                if (itemToDelete is CartItemByQuantity)
+                    InventoryService.Current.increaseItemQuantity(itemToDelete.Id, (itemToDelete as CartItemByQuantity).Quantity);
+                else if (itemToDelete is CartItemByWeight)
+                    InventoryService.Current.increaseItemWeight(itemToDelete.Id, (itemToDelete as CartItemByWeight).Weight);
             }
         }
 

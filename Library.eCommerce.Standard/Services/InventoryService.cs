@@ -1,7 +1,7 @@
 ﻿using System;
 using Library.eCommerce.Models;
 using Newtonsoft.Json;
-using ListNavigator;
+using Library.eCommerce.Standard.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -18,7 +18,14 @@ namespace Library.eCommerce.Services
 		private List<InventoryItem> inventoryList;
 		public List<InventoryItem> Inventory
 		{
-			get { return inventoryList; }
+			
+			get 
+			{
+				var itemsJson = new WebRequestHandler().Get("http://localhost:5170/Inventory");
+
+				return inventoryList; 
+			
+			}
 		}
 
 		
@@ -37,7 +44,8 @@ namespace Library.eCommerce.Services
 		//methods
 		private InventoryService()
 		{
-			inventoryList = new List<InventoryItem>();
+			var inventoryJson = new WebRequestHandler().Get("http://localhost:5170/Inventory").Result;
+			inventoryList = JsonConvert.DeserializeObject<List<InventoryItem>>(inventoryJson);
 			query = String.Empty;
 		}
 
@@ -74,44 +82,59 @@ namespace Library.eCommerce.Services
 
 		public void AddOrUpdate(InventoryItem item)
 		{
-            //Id management for adding a new record.
-            if (item.Id == 0)
+			//Id management for adding a new record.
+			//if (item.Id == 0)
+			//{
+			//    if (inventoryList.Any())
+			//    {
+			//        item.Id = inventoryList.Select(i => i.Id).Max() + 1;
+			//    }
+			//    else
+			//    {
+			//        item.Id = 1;
+			//    }
+			//}
+			//var oldVersion = inventoryList.FirstOrDefault(i => i.Id.Equals(item.Id));
+			//if (oldVersion != null)
+			//{
+			//	var index = inventoryList.IndexOf(oldVersion);
+			//	inventoryList.RemoveAt(index);
+			//	inventoryList.Insert(index, item);
+			//}
+			//else
+			//{
+			//	inventoryList.Add(item);
+			//}
+			if (item is InventoryItemByQuantity)
             {
-                if (inventoryList.Any())
+				var response = new WebRequestHandler().Post("http://localhost:5170/Inventory/AddOrUpdate", item as InventoryItemByQuantity).Result;
+				var newInvItem = JsonConvert.DeserializeObject<InventoryItem>(response);
+                var oldVersion = inventoryList.FirstOrDefault(i => i.Id.Equals(item.Id));
+                if (oldVersion != null)
                 {
-                    item.Id = inventoryList.Select(i => i.Id).Max() + 1;
+                    var index = inventoryList.IndexOf(oldVersion);
+                    inventoryList.RemoveAt(index);
+                    inventoryList.Insert(index, newInvItem);
                 }
                 else
                 {
-                    item.Id = 1;
+                    inventoryList.Add(newInvItem);
                 }
             }
-            if (item is InventoryItemByQuantity)
+			else if(item is InventoryItemByWeight)
             {
-				var oldVersion = inventoryList.FirstOrDefault(i =>i.Id.Equals(item.Id));
-				if(oldVersion != null)
-                {
-					var index = inventoryList.IndexOf(oldVersion);
-					inventoryList.RemoveAt(index);
-					inventoryList.Insert(index, item);
-                }
-                else
-                {
-					inventoryList.Add(item);
-                }
-            }
-            else if(item is InventoryItemByWeight)
-            {
+				var response = new WebRequestHandler().Post("http://localhost:5170/Inventory/AddOrUpdate", item as InventoryItemByWeight).Result;
+				var newInvItem = JsonConvert.DeserializeObject<InventoryItem>(response);
 				var oldVersion = inventoryList.FirstOrDefault(i => i.Id.Equals(item.Id));
 				if (oldVersion != null)
 				{
 					var index = inventoryList.IndexOf(oldVersion);
 					inventoryList.RemoveAt(index);
-					inventoryList.Insert(index, item);
+					inventoryList.Insert(index, newInvItem);
 				}
 				else
 				{
-					inventoryList.Add(item);
+					inventoryList.Add(newInvItem);
 				}
 			}
 		}
@@ -238,6 +261,22 @@ namespace Library.eCommerce.Services
 		public void decreaseItemWeight(InventoryItemByWeight item, double weight)
 		{
 			item.Weight -= weight;
+		}
+
+		public void increaseItemQuantity(int iD, int quan)
+		{
+			var item = inventoryList.FirstOrDefault(i => i.Id == iD);
+			var itemAsQuan = item as InventoryItemByQuantity;
+			if (itemAsQuan != null)
+				itemAsQuan.Quantity += quan;
+		}
+
+		public void increaseItemWeight(int iD, double weight)
+		{
+			var item = inventoryList.FirstOrDefault(i => i.Id == iD);
+			var itemAsWeight = item as InventoryItemByWeight;
+			if(itemAsWeight != null)
+				itemAsWeight.Weight += weight;
 		}
 
 

@@ -42,11 +42,11 @@ namespace eCommerce.UWP.Dialogs
             if (viewModel.BoundInvByWeight.Weight < viewModel.AmountToAdd)
                 viewModel.AmountToAdd = viewModel.BoundInvByWeight.Weight;
 
-            var newInvByWeight = new InventoryItemByWeight(viewModel.BoundItem.Name, viewModel.BoundItem.Description, viewModel.BoundItem.Price, viewModel.BoundInvByWeight.Weight, viewModel.BoundItem.isBoGo);
+            var newInvByWeight = new InventoryItemByWeight(viewModel.BoundItem.Name, viewModel.BoundItem.Description, viewModel.BoundItem.Price, viewModel.BoundInvByWeight.Weight, viewModel.BoundItem.isBoGo, viewModel.BoundInvByWeight.Id);
 
             //step 3: interact with the service using models;
             InventoryService.Current.AddToCart(newInvByWeight, 0, viewModel.AmountToAdd);
-            InventoryService.Current.AddOrUpdate(viewModel.BoundItem as InventoryItem);
+            InventoryService.Current.AddOrUpdate(newInvByWeight);
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

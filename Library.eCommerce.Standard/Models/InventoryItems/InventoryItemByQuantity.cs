@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Library.eCommerce.Standard.Utility;
+using Newtonsoft.Json;
+using System;
 namespace Library.eCommerce.Models
 {
+	[JsonConverter(typeof(ItemJsonConverter))]
 	public class InventoryItemByQuantity : InventoryItem
 	{
+		
 		public int Quantity { get; set; }
 		public InventoryItemByQuantity()
 		{

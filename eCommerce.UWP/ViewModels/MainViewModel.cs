@@ -36,11 +36,6 @@ namespace eCommerce.UWP.ViewModels
 
         public String SelectedLoad { get; set; }
 
-
-
-
-
-
         public ObservableCollection<ItemViewModel> Inventory
         {
             get
@@ -156,6 +151,7 @@ namespace eCommerce.UWP.ViewModels
             {
                 _cartService.Delete(SelectedItem.Id);
             }
+            NotifyPropertyChanged("Inventory");
             NotifyPropertyChanged("Cart");
             NotifyPropertyChanged("Subtotal");
             NotifyPropertyChanged("Tax");

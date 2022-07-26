@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Library.eCommerce.Standard.Utility;
+using Newtonsoft.Json;
+using System;
 namespace Library.eCommerce.Models
 {
+	[JsonConverter(typeof(ItemJsonConverter))]
 	public class CartItemByWeight : CartItem
 	{
 		public double Weight { get; set; }
@@ -37,6 +40,7 @@ namespace Library.eCommerce.Models
 			Price = item.Price;
 			isBoGo = item.isBoGo;
 			Weight = weight;
+			Id= item.Id;
 		}
 
 		public override string ToString()
